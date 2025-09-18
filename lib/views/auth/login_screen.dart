@@ -16,12 +16,12 @@ class LoginScreen extends StatelessWidget {
     final authC = Get.find<AuthController>();
     final emailC = TextEditingController();
     final passC = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: 44.h, left: 24.w, right: 24.w),
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -62,18 +62,30 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 12.h),
 
               /// Password Field
-              CustomTextField(
-                controller: passC,
-                hintText: "Password",
-                obscureText: true,
-                suffixIcon: const Icon(Icons.visibility_off_outlined),
-                validator: (value) {
-                  if (value == null || value.length < 6) {
-                    return "Password must be at least 6 characters";
-                  }
-                  return null;
-                },
+              Obx(
+                () => CustomTextField(
+                  controller: passC,
+                  hintText: "Password",
+                  obscureText:
+                      authC.isPasswordHidden.value, // bind to GetX state
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      authC.isPasswordHidden.value
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                    ),
+                    onPressed:
+                        authC.togglePasswordVisibility, // toggle visibility
+                  ),
+                  validator: (value) {
+                    if (value == null || value.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    return null;
+                  },
+                ),
               ),
+
               SizedBox(height: 8.h),
 
               /// Forgot Password
@@ -98,13 +110,13 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 16.h),
 
               /// Login Button
-              Obx(() =>
-                 CustomButton(
+              Obx(
+                () => CustomButton(
                   text: "Sign In",
                   onPressed: authC.isLoading.value
                       ? null
                       : () {
-                          if (_formKey.currentState!.validate()) {
+                          if (formKey.currentState!.validate()) {
                             authC.login(emailC.text.trim(), passC.text.trim());
                           }
                         },

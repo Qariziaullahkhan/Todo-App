@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_ap/controllers/todo_controller.dart';
@@ -28,29 +30,31 @@ class UpdateTodoScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            CustomTextField(
-              controller: nameC,
-              hintText: 'Name',
-            ),
+            CustomTextField(controller: nameC, hintText: 'Name'),
             const SizedBox(height: 12),
-            CustomTextField(
-              controller: valueC,
-              hintText: 'Value',
-            ),
+            CustomTextField(controller: valueC, hintText: 'Value'),
             const SizedBox(height: 20),
-            Obx(() => CustomButton(
-                  text: todoC.isLoading.value ? 'Updating...' : 'Update Todo',
-                  onPressed: todoC.isLoading.value
-                      ? null
-                      : () async {
-                          await todoC.updateTodo(
-                            todoId,
-                            name: nameC.text.trim(),
-                            value: valueC.text.trim(),
-                          );
-                          Get.back(); // go back after update
-                        },
-                )),
+            Obx(
+              () => CustomButton(
+                text: todoC.isLoading.value ? 'Updating...' : 'Update Todo',
+                onPressed: todoC.isLoading.value
+                    ? null
+                    : () async {
+                        log(
+                          'Updating todo: id=$todoId, name=${nameC.text.trim()}, value=${valueC.text.trim()}',
+                        );
+                        final success = await todoC.updateTodo(
+                          todoId,
+                          name: nameC.text.trim(),
+                          value: valueC.text.trim(),
+                        );
+
+                        if (success) {
+                          Get.back(); // Navigate back only if update was successful
+                        }
+                      },
+              ),
+            ),
           ],
         ),
       ),

@@ -5,7 +5,16 @@ import 'package:todo_ap/services/api_services.dart';
 
 class AuthController extends GetxController {
   final ApiService _api = ApiService();
+    var isLoading = false.obs;
 
+  var isPasswordHidden = true.obs; // Add this for password visibility
+   var isConfirmPasswordHidden = true.obs; // confirm password
+  void togglePasswordVisibility() {
+    isPasswordHidden.value = !isPasswordHidden.value;
+  }
+   void toggleConfirmPasswordVisibility() {
+    isConfirmPasswordHidden.value = !isConfirmPasswordHidden.value;
+  }
   Map<String, dynamic> _safeDecode(String? body) {
     if (body == null || body.trim().isEmpty) return <String, dynamic>{};
     try {
@@ -18,7 +27,6 @@ class AuthController extends GetxController {
     }
   }
 
-  var isLoading = false.obs;
 
   Future<void> register(String name, String email, String password, String passwordConfirmation) async {
     try {

@@ -20,7 +20,8 @@ class TodoModel {
   factory TodoModel.fromJson(Map<String, dynamic> json) {
     return TodoModel(
       id: json['id'],
-      name: json['name'] ?? '', // Added name field
+      // Use value as name if name is not provided
+      name: json['name'] ?? json['value'] ?? 'Unnamed Todo',
       value: json['value'] ?? '',
       status: json['status'] ?? 'open',
       user: json['user'] ?? '',

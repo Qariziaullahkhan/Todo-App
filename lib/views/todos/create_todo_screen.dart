@@ -19,24 +19,21 @@ class CreateTodoScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            CustomTextField(
-              controller: nameC,
-              hintText: 'Name',
-            ),
+            CustomTextField(controller: nameC, hintText: 'Name'),
             const SizedBox(height: 12),
-            CustomTextField(
-              controller: valueC,
-              hintText: 'Value',
-            ),
+            CustomTextField(controller: valueC, hintText: 'Value'),
             const SizedBox(height: 20),
-            Obx(() => CustomButton(
-                  text: todoC.isLoading.value ? 'Creating...' : 'Create Todo',
-                  onPressed: todoC.isLoading.value
-                      ? null
-                      : () {
-                          todoC.createTodo(nameC.text.trim(), valueC.text.trim());
-                        },
-                )),
+            Obx(
+              () => CustomButton(
+                text: todoC.isLoading.value ? 'Creating...' : 'Create Todo',
+                onPressed: todoC.isLoading.value
+                    ? null
+                    : () {
+                        todoC.createTodo(nameC.text.trim(), valueC.text.trim());
+                        Get.back();
+                      },
+              ),
+            ),
           ],
         ),
       ),

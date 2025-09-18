@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_ap/constants/resposnive.dart';
 import 'package:todo_ap/controllers/auth_controller.dart';
 import 'package:todo_ap/controllers/todo_controller.dart';
 import 'package:todo_ap/views/todos/create_todo_screen.dart';
@@ -11,7 +12,7 @@ class TodoListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todoC = Get.put(TodoController());
-    final authC = Get.put(AuthController()); // AuthController for logout
+    final authC = Get.put(AuthController());
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +23,7 @@ class TodoListScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              authC.logout(); // This will remove token and navigate to login
+              authC.logout();
             },
           ),
         ],
@@ -59,23 +60,23 @@ class TodoListScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      t.name, // No need for null check
+                      'Name: ${t.name}',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                     SizedBox(height: 8.h),
                     Text(
-                      t.value,
+                      'Value: ${t.value}',
                       style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
+                       fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                     SizedBox(height: 12.h),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton.icon(
                           onPressed: () {
@@ -83,7 +84,7 @@ class TodoListScreen extends StatelessWidget {
                               () => UpdateTodoScreen(
                                 todoId: t.id,
                                 currentValue: t.value,
-                                currentName: t.name ?? '', // Handle null name
+                                currentName: t.name,
                               ),
                             );
                           },
@@ -93,10 +94,9 @@ class TodoListScreen extends StatelessWidget {
                             backgroundColor: Colors.orange,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         ElevatedButton.icon(
                           onPressed: () {
-                            // Show confirmation dialog before deleting
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
